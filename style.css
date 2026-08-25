@@ -1,0 +1,71 @@
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(13, 18, 30, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Interactive Task Card */
+.task-row {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.task-row:hover {
+  border-color: rgba(249, 115, 22, 0.35);
+  background: rgba(18, 24, 40, 0.85);
+  transform: translateY(-1.5px);
+}
+
+/* Rounded Animated Checkbox */
+.custom-checkbox {
+  appearance: none;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 0.55rem;
+  border: 1.5px solid #475569;
+  background-color: rgba(15, 23, 42, 0.6);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-checkbox:hover {
+  border-color: #fb923c;
+  background-color: rgba(249, 115, 22, 0.1);
+}
+
+.custom-checkbox::before {
+  content: "";
+  width: 0.65rem;
+  height: 0.65rem;
+  transform: scale(0);
+  transition: 140ms transform ease-in-out;
+  box-shadow: inset 1em 1em white;
+  transform-origin: center;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.custom-checkbox:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.5);
+}
+
+.custom-checkbox:checked::before {
+  transform: scale(1);
+}
+
+/* Completed Task Strikethrough */
+.completed-text {
+  text-decoration: line-through;
+  color: #64748b !important;
+}

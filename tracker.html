@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shinobi Habit Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-[#070a12] text-slate-100 min-h-screen py-8 sm:py-12 px-4 selection:bg-orange-500 selection:text-white relative overflow-x-hidden">
+
+  <!-- Ambient Orbs -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-orange-600/15 blur-[160px] pointer-events-none rounded-full -z-10"></div>
+  <div class="fixed bottom-0 right-0 w-[500px] h-[400px] bg-indigo-600/10 blur-[150px] pointer-events-none rounded-full -z-10"></div>
+
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <!-- Top Bar -->
+    <header class="flex items-center justify-between glass-panel p-4 px-5 rounded-3xl border border-slate-800/80 shadow-2xl">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-orange-500 to-indigo-500 p-[1px]">
+          <div class="w-full h-full bg-[#0b0f19] rounded-[11px] flex items-center justify-center">
+            <span class="text-orange-400 text-sm font-bold">🍥</span>
+          </div>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold tracking-tight font-heading bg-gradient-to-r from-white via-slate-200 to-orange-300 bg-clip-text text-transparent">
+            ATOMIC LEVELING
+          </h1>
+        </div>
+      </div>
+
+      <!-- User ID & Export/Import Controls -->
+      <div class="flex items-center gap-2">
+        <span id="active-id-badge" class="hidden sm:inline-block px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-orange-500/10 text-orange-400 border border-orange-500/30">
+          ID: ---
+        </span>
+        <button onclick="exportData()" title="Backup Data (JSON)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/70 hover:bg-slate-700/80 border border-slate-700/50 text-slate-300 transition flex items-center gap-1.5 active:scale-95">
+          <svg class="w-3.5 h-3.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+          Export
+        </button>
+        <label class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/70 hover:bg-slate-700/80 border border-slate-700/50 text-slate-300 transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          Import
+          <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)" />
+        </label>
+      </div>
+    </header>
+
+    <!-- Naruto Shinobi Rank Card -->
+    <div class="glass-panel p-5 sm:p-6 rounded-3xl border border-orange-500/20 shadow-[0_0_30px_rgba(249,115,22,0.12)] relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 relative z-10">
+        
+        <!-- DP Avatar & Titles -->
+        <div class="flex items-center gap-4">
+          <div class="relative group">
+            <div id="avatar-glow" class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-orange-500 to-indigo-500 opacity-60 blur-sm group-hover:opacity-100 transition duration-500"></div>
+            <img 
+              id="user-dp" 
+              src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcSZ1mind2UzSYfLG1kossFhdUEXFBdlH3-oZxzJ3X5fMabV_Fn50Yx78b9d4ulE3OavkAmolWlbUoVKn2k" 
+              alt="Shinobi Avatar" 
+              class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-slate-700 bg-slate-900 shadow-xl transition-all duration-500"
+            />
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span id="shinobi-rank-badge" class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/40 font-heading">
+                Genin Rank
+              </span>
+              <span id="level-badge" class="text-xs font-bold text-slate-400 font-heading">LEVEL 1</span>
+            </div>
+            
+            <h2 id="shinobi-display-name" class="text-xl sm:text-2xl font-black font-heading tracking-tight text-white">
+              Shinobi
+            </h2>
+            
+            <p id="shinobi-goal-display" class="text-xs text-orange-300/80 font-medium"></p>
+            
+            <p id="streak-indicator" class="text-xs font-medium text-slate-400 flex items-center gap-1.5 pt-0.5">
+              <span>🔥</span> <span class="text-orange-400 font-semibold" id="streak-days-count">0</span>-day streak (&ge;70% daily progress)
+            </p>
+          </div>
+        </div>
+
+        <!-- Next Level Target & Switch User -->
+        <div class="flex flex-col gap-2 sm:w-48 text-right">
+          <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80 flex flex-col justify-center">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Next Evolution</span>
+            <span id="next-level-target" class="text-base font-extrabold font-heading text-slate-200 mt-0.5">11 Days (Sage Mode)</span>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-2">
+              <div id="level-prog-bar" class="bg-gradient-to-r from-orange-500 to-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <button onclick="switchUser()" class="text-[11px] text-slate-500 hover:text-orange-400 transition text-right pr-1 font-medium">
+            Switch Ninja Account ⚙️
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Analytics Dashboard Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      
+      <!-- Today Completion Dial -->
+      <div class="glass-panel p-5 rounded-3xl border border-slate-800/80 shadow-xl flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Today's Focus</span>
+          <h4 id="today-fraction" class="text-2xl font-black font-heading text-white mt-1">0/0</h4>
+          <p id="today-status" class="text-xs text-orange-400 font-medium mt-0.5">Need &ge;70% for streak</p>
+        </div>
+        <div class="relative w-14 h-14">
+          <svg class="w-14 h-14 transform -rotate-90" viewBox="0 0 36 36">
+            <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path id="today-ring" class="text-orange-500 transition-all duration-700 ease-out" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <span id="today-pct" class="absolute inset-0 flex items-center justify-center text-[11px] font-bold font-heading text-slate-200">0%</span>
+        </div>
+      </div>
+
+      <!-- Weekly Progress (7 Days) -->
+      <div class="glass-panel p-5 rounded-3xl border border-slate-800/80 shadow-xl flex flex-col justify-between">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Weekly Velocity</span>
+            <div class="flex items-baseline gap-2 mt-1">
+              <h4 id="weekly-pct" class="text-2xl font-black font-heading text-orange-400">0%</h4>
+              <span id="weekly-count" class="text-[11px] text-slate-500 font-medium">0/0 logs</span>
+            </div>
+          </div>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">7D</span>
+        </div>
+        <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden mt-3 p-[1px] border border-slate-700/40">
+          <div id="weekly-bar" class="bg-gradient-to-r from-orange-500 to-indigo-400 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(249,115,22,0.5)]" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Monthly Consistency (30 Days) -->
+      <div class="glass-panel p-5 rounded-3xl border border-slate-800/80 shadow-xl flex flex-col justify-between">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Monthly Pace</span>
+            <div class="flex items-baseline gap-2 mt-1">
+              <h4 id="monthly-pct" class="text-2xl font-black font-heading text-emerald-400">0%</h4>
+              <span id="monthly-count" class="text-[11px] text-slate-500 font-medium">0/0 logs</span>
+            </div>
+          </div>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">30D</span>
+        </div>
+        <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden mt-3 p-[1px] border border-slate-700/40">
+          <div id="monthly-bar" class="bg-gradient-to-r from-emerald-500 to-teal-300 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 0%"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Add Task Bar -->
+    <div class="glass-panel p-2.5 rounded-2xl border border-slate-800/90 shadow-2xl focus-within:border-orange-500/50 transition duration-200">
+      <form id="add-task-form" class="flex items-center gap-2">
+        <div class="pl-3 text-slate-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3-3H9m12 3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <input
+          type="text"
+          id="task-input"
+          placeholder="Add a new daily ninja training habit (e.g., Code DSA 1hr, Gym, Read)..."
+          class="flex-1 bg-transparent px-2 py-2.5 text-sm focus:outline-none text-slate-100 placeholder-slate-500"
+          required
+        />
+        <button
+          type="submit"
+          class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 active:scale-95 text-white font-semibold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all duration-150 shadow-lg shadow-orange-500/30 flex items-center gap-1.5"
+        >
+          <span>Add Training</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Daily Training Routine Card -->
+    <div class="glass-panel p-5 sm:p-6 rounded-3xl border border-slate-800/80 shadow-2xl">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="text-lg font-bold text-white font-heading">Daily Training Routine</h2>
+          <p id="current-date" class="text-xs text-slate-400 mt-0.5"></p>
+        </div>
+      </div>
+
+      <ul id="task-list" class="space-y-3"></ul>
+
+      <div id="empty-state" class="text-center py-12 px-4 text-slate-500 hidden">
+        <div class="w-12 h-12 rounded-2xl bg-slate-800/50 border border-slate-700/50 flex items-center justify-center mx-auto mb-3 text-slate-400 text-xl shadow-inner">📜</div>
+        <p class="text-sm font-semibold text-slate-300">No active training missions</p>
+        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Add training tasks above. Complete &ge;70% each day to awaken Sage Mode and Six Paths Hokage forms!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shinobi Registration & Login</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-[#070a12] text-slate-100 min-h-screen py-10 px-4 flex items-center justify-center selection:bg-indigo-500 selection:text-white relative overflow-hidden font-['Plus_Jakarta_Sans']">
+
+  <!-- Ambient Glow Orbs -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-orange-600/15 blur-[160px] pointer-events-none rounded-full -z-10"></div>
+  <div class="fixed bottom-0 right-10 w-[500px] h-[400px] bg-indigo-600/15 blur-[150px] pointer-events-none rounded-full -z-10"></div>
+
+  <div class="max-w-md w-full mx-auto space-y-6">
+
+    <!-- Header Icon & Brand -->
+    <div class="text-center space-y-2">
+      <div class="inline-flex w-12 h-12 rounded-2xl bg-gradient-to-tr from-orange-500 to-indigo-500 p-[1px] shadow-xl shadow-orange-500/20 mb-1">
+        <div class="w-full h-full bg-[#0b0f19] rounded-[15px] flex items-center justify-center">
+          <span class="text-orange-400 text-2xl font-bold">🍥</span>
+        </div>
+      </div>
+      <h1 class="text-3xl font-extrabold tracking-tight font-heading bg-gradient-to-r from-white via-slate-200 to-orange-300 bg-clip-text text-transparent">
+        Shinobi Registration
+      </h1>
+      <p class="text-slate-400 text-xs">Enter your details or log in with your Ninja ID.</p>
+    </div>
+
+    <!-- Registration & Login Card -->
+    <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-orange-500/20 shadow-[0_0_40px_rgba(249,115,22,0.12)]">
+      <form id="onboarding-form" class="space-y-4">
+
+        <!-- Unique User ID -->
+        <div class="space-y-1.5">
+          <div class="flex justify-between items-center">
+            <label for="ninja-id" class="text-xs font-bold uppercase tracking-wider text-slate-400">Unique Shinobi ID</label>
+            <button type="button" onclick="generateRandomId()" class="text-[11px] text-orange-400 hover:text-orange-300 underline font-semibold">Generate ID</button>
+          </div>
+          <input
+            type="text"
+            id="ninja-id"
+            placeholder="e.g. NARUTO-77"
+            class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-100 placeholder-slate-600 font-mono transition"
+            required
+          />
+        </div>
+
+        <!-- Ninja Name -->
+        <div class="space-y-1.5">
+          <label for="ninja-name" class="text-xs font-bold uppercase tracking-wider text-slate-400">Shinobi Name</label>
+          <input
+            type="text"
+            id="ninja-name"
+            placeholder="e.g. Naruto Uzumaki"
+            class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-100 placeholder-slate-600 transition"
+            required
+          />
+        </div>
+
+        <!-- Ninja Specialization -->
+        <div class="space-y-1.5">
+          <label for="ninja-class" class="text-xs font-bold uppercase tracking-wider text-slate-400">Ninja Specialization</label>
+          <select
+            id="ninja-class"
+            class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-200 transition cursor-pointer"
+          >
+            <option value="Ninjutsu / Developer">💻 Developer / Coding Sage</option>
+            <option value="Taijutsu / Fitness">🏋️ Taijutsu / Fitness Master</option>
+            <option value="Fuinjutsu / Scholar">📚 Fuinjutsu / Academic Scholar</option>
+            <option value="Sage / All-Rounder">🍥 Sage of Six Paths / All-Rounder</option>
+          </select>
+        </div>
+
+        <!-- Ninja Ninja Way / Daily Goal -->
+        <div class="space-y-1.5">
+          <label for="ninja-goal" class="text-xs font-bold uppercase tracking-wider text-slate-400">Ninja Way (Primary Goal)</label>
+          <input
+            type="text"
+            id="ninja-goal"
+            placeholder="e.g. Master DSA & Never give up!"
+            class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-100 placeholder-slate-600 transition"
+            required
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2">
+          <button
+            type="submit"
+            class="w-full bg-gradient-to-r from-orange-500 to-indigo-600 hover:from-orange-400 hover:to-indigo-500 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 font-heading"
+          >
+            <span>Begin Ninja Way</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="text-center text-[11px] text-slate-500">
+      Your unique ID allows you to switch profiles and preserves all your tasks and streak records.
+    </div>
+
+  </div>
+
+  <script>
+    if (localStorage.getItem("active_shinobi_id")) {
+      window.location.href = "tracker.html";
+    }
+
+    function generateRandomId() {
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("ninja-id").value = `NINJA-${rand}`;
+    }
+
+    document.getElementById("onboarding-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const id = document.getElementById("ninja-id").value.trim().toUpperCase();
+      const name = document.getElementById("ninja-name").value.trim();
+      const specialty = document.getElementById("ninja-class").value;
+      const goal = document.getElementById("ninja-goal").value.trim();
+
+      if (id && name && goal) {
+        const usersDatabase = JSON.parse(localStorage.getItem("shinobi_users_db")) || {};
+        
+        if (!usersDatabase[id]) {
+          usersDatabase[id] = {
+            profile: { id, name, specialty, goal },
+            tasks: [],
+            completionHistory: {}
+          };
+        } else {
+          usersDatabase[id].profile = { id, name, specialty, goal };
+        }
+
+        localStorage.setItem("shinobi_users_db", JSON.stringify(usersDatabase));
+        localStorage.setItem("active_shinobi_id", id);
+        window.location.href = "tracker.html";
+      }
+    });
+  </script>
+</body>
+</html>
